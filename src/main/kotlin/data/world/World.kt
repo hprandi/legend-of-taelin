@@ -2,6 +2,8 @@ package com.hprandi.lot.world
 
 import data.world.Square
 
+// x = horizontal, y = vertical, z = depth
+
 class World {
     private val map: List<List<Square>> = createMap()
 

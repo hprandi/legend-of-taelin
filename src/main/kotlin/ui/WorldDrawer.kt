@@ -4,16 +4,17 @@ import com.hprandi.lot.world.World
 import data.world.Thing
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
-import javafx.scene.layout.TilePane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 
 class WorldDrawer {
     private val imageRepository = ImageRepository()
 
-    fun draw(world: World, squareSize: Double): TilePane {
-        val tilePane = TilePane()
+    fun draw(world: World, squareSize: Double): Pane {
+        val gridPane = GridPane()
 
         repeat(World.size) { x ->
             repeat(World.size) { y ->
@@ -28,11 +29,11 @@ class WorldDrawer {
 
                 stackPane.children.add(drawBorder(squareSize))
 
-                tilePane.children.add(stackPane)
+                gridPane.add(stackPane, x, y)
             }
         }
 
-        return tilePane
+        return gridPane
     }
 
     private fun drawBorder(squareSize: Double) =
