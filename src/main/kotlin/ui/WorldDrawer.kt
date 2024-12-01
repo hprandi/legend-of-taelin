@@ -18,26 +18,29 @@ class WorldDrawer {
         repeat(World.size) { x ->
             repeat(World.size) { y ->
                 val square = world.getSquare(x, y)
+                val stackPane = StackPane()
 
-                val firstThing = square.things.first()
-                val image = imageRepository.get(firstThing)
-                val grassImageView = ImageView(image).apply {
-                    fitWidth = squareSize
-                    fitHeight = squareSize
+                square.things.forEach {
+                    val image = imageRepository.get(it)
+                    val imageView = image.draw(squareSize)
+                    stackPane.children.add(imageView)
                 }
 
-                val border = Rectangle(squareSize, squareSize).apply {
-                    stroke = Color.BLACK
-                    strokeWidth = 2.0
-                    fill = Color.TRANSPARENT
-                }
+                stackPane.children.add(drawBorder(squareSize))
 
-                tilePane.children.add(StackPane(grassImageView, border))
+                tilePane.children.add(stackPane)
             }
         }
 
         return tilePane
     }
+
+    private fun drawBorder(squareSize: Double) =
+        Rectangle(squareSize, squareSize).apply {
+            stroke = Color.BLACK
+            strokeWidth = 2.0
+            fill = Color.TRANSPARENT
+        }
 }
 
 class ImageRepository {
@@ -46,3 +49,9 @@ class ImageRepository {
     fun get(thing: Thing): Image =
         images.getOrPut(thing) { Image(thing.image) }
 }
+
+private fun Image.draw(squareSize: Double) =
+    ImageView(this).apply {
+        fitWidth = squareSize
+        fitHeight = squareSize
+    }
